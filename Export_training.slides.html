@@ -14396,7 +14396,8 @@ div.jp-OutputPrompt {
 </div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Outline">Outline<a class="anchor-link" href="#Outline">&#182;</a></h1><ol>
+<h1 id="Outline-and-Motivation">Outline and Motivation<a class="anchor-link" href="#Outline-and-Motivation">&#182;</a></h1><p>The purpose of this notebook is to provide examples and to serve as guide to preparing and submitting an export for disclosure review.</p>
+<ol>
 <li>How to prepare an export<ul>
 <li>Creating all necessary files</li>
 </ul>
@@ -14651,7 +14652,7 @@ div.jp-OutputPrompt {
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[75]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="n">total_jobs_prop_rounded</span> <span class="o">&lt;-</span> <span class="n">total_jobs_prop</span> <span class="o">%&gt;%</span>
@@ -14659,10 +14660,9 @@ div.jp-OutputPrompt {
         <span class="n">total_jobs_rounded</span> <span class="o">=</span> <span class="nf">ifelse</span><span class="p">(</span><span class="n">total_jobs</span> <span class="o">&lt;</span> <span class="m">1000</span><span class="p">,</span> <span class="c1">#applying rounding rules</span>
                                     <span class="nf">round</span><span class="p">(</span><span class="n">total_jobs</span><span class="p">,</span> <span class="n">digits</span> <span class="o">=</span> <span class="m">-1</span><span class="p">),</span> 
                                     <span class="nf">round</span><span class="p">(</span><span class="n">total_jobs</span><span class="p">,</span> <span class="n">digits</span> <span class="o">=</span> <span class="m">-2</span><span class="p">)),</span>
-    <span class="n">prop_rounded</span> <span class="o">=</span> <span class="nf">round</span><span class="p">(</span><span class="n">total_jobs_rounded</span><span class="o">/</span><span class="nf">sum</span><span class="p">(</span><span class="n">total_jobs_rounded</span><span class="p">),</span><span class="m">2</span><span class="p">)</span> <span class="o">*</span><span class="m">100</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-    <span class="nf">head</span><span class="p">()</span>
+    <span class="n">prop_rounded</span> <span class="o">=</span> <span class="nf">round</span><span class="p">(</span><span class="n">total_jobs_rounded</span><span class="o">/</span><span class="nf">sum</span><span class="p">(</span><span class="n">total_jobs_rounded</span><span class="p">),</span><span class="m">2</span><span class="p">)</span> <span class="o">*</span><span class="m">100</span><span class="p">)</span> 
 
-<span class="n">total_jobs_prop_rounded</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">total_jobs_prop_rounded</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14710,16 +14710,98 @@ div.jp-OutputPrompt {
 </div></div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Since we are showing the top 6 counties with the most jobs, we need to include the totals for the columns <code>total_jobs</code> and <code>total_jobs_rounded</code> to show how we calculated the proportions. We will add a row called <code>Total</code> with the sum of these 2 columns.</p>
+
+</div>
+</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[79]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-r"><pre><span></span><span class="n">total_df</span> <span class="o">&lt;-</span> <span class="n">total_jobs_prop_rounded</span> <span class="o">%&gt;%</span>
+    <span class="nf">summarize</span><span class="p">(</span><span class="n">total_jobs</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="n">total_jobs</span><span class="p">),</span>
+              <span class="n">census_block_count</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="n">census_block_count</span><span class="p">),</span>
+              <span class="n">prop</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="n">census_block_count</span><span class="p">)</span><span class="o">/</span><span class="nf">sum</span><span class="p">(</span><span class="n">census_block_count</span><span class="p">)</span><span class="o">*</span><span class="m">100</span><span class="p">,</span>
+              <span class="n">total_jobs_rounded</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="n">total_jobs_rounded</span><span class="p">),</span>
+              <span class="n">prop_rounded</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="n">total_jobs_rounded</span><span class="p">)</span><span class="o">/</span><span class="nf">sum</span><span class="p">(</span><span class="n">total_jobs_rounded</span><span class="p">)</span><span class="o">*</span><span class="m">100</span><span class="p">)</span>
+
+<span class="n">total_df</span> <span class="o">&lt;-</span> <span class="nf">cbind</span><span class="p">(</span><span class="n">ctyname</span> <span class="o">=</span> <span class="s">&#39;Total&#39;</span><span class="p">,</span> <span class="n">total_df</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div></div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[82]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-r"><pre><span></span><span class="n">total_jobs_prop_rounded_w_total</span> <span class="o">&lt;-</span> <span class="n">total_jobs_prop_rounded</span> <span class="o">%&gt;%</span> 
+    <span class="nf">head</span><span class="p">()</span> <span class="o">%&gt;%</span> 
+    <span class="nf">rbind</span><span class="p">(</span><span class="n">total_df</span><span class="p">)</span>
+<span class="n">total_jobs_prop_rounded_w_total</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<table class="dataframe">
+<caption>A tibble: 7 × 6</caption>
+<thead>
+	<tr><th scope=col>ctyname</th><th scope=col>total_jobs</th><th scope=col>census_block_count</th><th scope=col>prop</th><th scope=col>total_jobs_rounded</th><th scope=col>prop_rounded</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Denver County, CO   </td><td> 518198</td><td> 2484</td><td> 20.189302</td><td> 518200</td><td> 20</td></tr>
+	<tr><td>Arapahoe County, CO </td><td> 329681</td><td> 1435</td><td> 12.844567</td><td> 329700</td><td> 13</td></tr>
+	<tr><td>El Paso County, CO  </td><td> 258298</td><td> 2248</td><td> 10.063443</td><td> 258300</td><td> 10</td></tr>
+	<tr><td>Jefferson County, CO</td><td> 244706</td><td> 1636</td><td>  9.533891</td><td> 244700</td><td> 10</td></tr>
+	<tr><td>Adams County, CO    </td><td> 222035</td><td> 1234</td><td>  8.650615</td><td> 222000</td><td>  9</td></tr>
+	<tr><td>Boulder County, CO  </td><td> 177153</td><td> 1135</td><td>  6.901986</td><td> 177200</td><td>  7</td></tr>
+	<tr><td>Total               </td><td>2566696</td><td>18887</td><td>100.000000</td><td>2566940</td><td>100</td></tr>
+</tbody>
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div></div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Creating-Bar-Plot">Creating Bar Plot<a class="anchor-link" href="#Creating-Bar-Plot">&#182;</a></h1>
 </div>
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[87]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="c1"># Basic barplot</span>
-<span class="nf">ggplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">total_jobs_prop_rounded</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">ctyname</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">prop_rounded</span><span class="p">))</span> <span class="o">+</span>
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">total_jobs_prop_rounded</span> <span class="o">%&gt;%</span> <span class="nf">head</span><span class="p">(),</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">ctyname</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">prop_rounded</span><span class="p">))</span> <span class="o">+</span>
     <span class="nf">geom_bar</span><span class="p">(</span><span class="n">stat</span><span class="o">=</span><span class="s">&quot;identity&quot;</span><span class="p">)</span> <span class="o">+</span>
     <span class="nf">theme</span><span class="p">(</span><span class="n">axis.text.x</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">angle</span> <span class="o">=</span> <span class="m">45</span><span class="p">,</span> <span class="n">hjust</span> <span class="o">=</span> <span class="m">1</span><span class="p">))</span>
 <span class="nf">ggsave</span><span class="p">(</span><span class="s">&quot;export_1_bar_plot.png&quot;</span><span class="p">)</span>
@@ -15495,11 +15577,11 @@ height=420
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[83]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="n">total_jobs_prop_rounded</span> <span class="o">%&gt;%</span> <span class="nf">write_csv</span><span class="p">(</span><span class="s">&quot;export_1_counts_for_bar_plot.csv&quot;</span><span class="p">)</span>
-<span class="n">total_jobs_prop_rounded</span>
+<div class=" highlight hl-r"><pre><span></span><span class="n">total_jobs_prop_rounded_w_total</span> <span class="o">%&gt;%</span> <span class="nf">write_csv</span><span class="p">(</span><span class="s">&quot;export_1_counts_for_bar_plot.csv&quot;</span><span class="p">)</span>
+<span class="n">total_jobs_prop_rounded_w_total</span>
 </pre></div>
 
      </div>
@@ -15521,18 +15603,19 @@ height=420
 
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
 <table class="dataframe">
-<caption>A tibble: 6 × 6</caption>
+<caption>A tibble: 7 × 6</caption>
 <thead>
 	<tr><th scope=col>ctyname</th><th scope=col>total_jobs</th><th scope=col>census_block_count</th><th scope=col>prop</th><th scope=col>total_jobs_rounded</th><th scope=col>prop_rounded</th></tr>
 	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><td>Denver County, CO   </td><td>518198</td><td>2484</td><td>20.189302</td><td>518200</td><td>20</td></tr>
-	<tr><td>Arapahoe County, CO </td><td>329681</td><td>1435</td><td>12.844567</td><td>329700</td><td>13</td></tr>
-	<tr><td>El Paso County, CO  </td><td>258298</td><td>2248</td><td>10.063443</td><td>258300</td><td>10</td></tr>
-	<tr><td>Jefferson County, CO</td><td>244706</td><td>1636</td><td> 9.533891</td><td>244700</td><td>10</td></tr>
-	<tr><td>Adams County, CO    </td><td>222035</td><td>1234</td><td> 8.650615</td><td>222000</td><td> 9</td></tr>
-	<tr><td>Boulder County, CO  </td><td>177153</td><td>1135</td><td> 6.901986</td><td>177200</td><td> 7</td></tr>
+	<tr><td>Denver County, CO   </td><td> 518198</td><td> 2484</td><td> 20.189302</td><td> 518200</td><td> 20</td></tr>
+	<tr><td>Arapahoe County, CO </td><td> 329681</td><td> 1435</td><td> 12.844567</td><td> 329700</td><td> 13</td></tr>
+	<tr><td>El Paso County, CO  </td><td> 258298</td><td> 2248</td><td> 10.063443</td><td> 258300</td><td> 10</td></tr>
+	<tr><td>Jefferson County, CO</td><td> 244706</td><td> 1636</td><td>  9.533891</td><td> 244700</td><td> 10</td></tr>
+	<tr><td>Adams County, CO    </td><td> 222035</td><td> 1234</td><td>  8.650615</td><td> 222000</td><td>  9</td></tr>
+	<tr><td>Boulder County, CO  </td><td> 177153</td><td> 1135</td><td>  6.901986</td><td> 177200</td><td>  7</td></tr>
+	<tr><td>Total               </td><td>2566696</td><td>18887</td><td>100.000000</td><td>2566940</td><td>100</td></tr>
 </tbody>
 </table>
 
@@ -15558,7 +15641,7 @@ height=420
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="n">median_jobs_per_census_block</span> <span class="o">&lt;-</span> <span class="n">df_inner_join</span> <span class="o">%&gt;%</span> 
@@ -15629,7 +15712,7 @@ height=420
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="n">median_jobs_per_census_block</span> <span class="o">&lt;-</span> <span class="n">df_inner_join</span> <span class="o">%&gt;%</span> 
@@ -15708,7 +15791,7 @@ height=420
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="n">fuzzy_median_jobs_per_census_block</span> <span class="o">&lt;-</span> <span class="n">df_inner_join</span> <span class="o">%&gt;%</span> 
@@ -15790,7 +15873,7 @@ height=420
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="n">export_median_jobs_fuzzy_rounded</span> <span class="o">&lt;-</span> <span class="n">fuzzy_median_jobs_per_census_block</span> <span class="o">%&gt;%</span>
@@ -15854,7 +15937,7 @@ height=420
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="n">fuzzy_median_jobs_per_census_block</span> <span class="o">%&gt;%</span> <span class="nf">write_csv</span><span class="p">(</span><span class="s">&quot;export_2_data.csv&quot;</span><span class="p">)</span>
