@@ -7,8 +7,8 @@ code-fold: true
 code-summary: "Show the code"
 editor: visual
 df-print: paged
-rendering: embed-resources
-
+Rendering:
+  embed-resources: true
 ---
 
 ## Expectations
@@ -43,10 +43,10 @@ This presentation will walk you through how to prepare files for the export proc
 
 ## Submitting a Proper Export {.scrollable}
 
-It is important to focus on the files for export documentation first. The reasons being are: 
+It is important to focus on the files for export documentation first. The reasons being are:
 
-1. This will dictate what you are allowed to export 
-2. You know what the desired tables and output will be. In reality, these steps are done in tandem because the underlying counts can limit what you are allowed to export.
+1.  This will dictate what you are allowed to export
+2.  You know what the desired tables and output will be. In reality, these steps are done in tandem because the underlying counts can limit what you are allowed to export.
 
 The following supporting *Files for Export Documentation* and *Documentation Memo* must accompany all *Files for Export*:
 
@@ -120,6 +120,7 @@ total_jobs_by_county <- df_inner_join %>%
 head(total_jobs_by_county)
 
 ```
+
 We have added counts for our variable of interest *census_block_count*
 
 ## Export 1: Bar Plot {.scrollable}
@@ -140,7 +141,7 @@ head(total_jobs_prop)
 
 Now that we have the proportion calculated, we need to apply rounding rules.
 
-**Rounding Rules** 
+**Rounding Rules**
 
 Percentages, proportions and ratios need to be rounded - you must apply the rounding rules first to the true numerator and denominator before calculating any proportions. Once the proportions are calculated, they must be rounded to the nearest hundredth (.01) or the nearest percent if using whole numbers (1%).
 
@@ -260,7 +261,7 @@ median_jobs_per_census_block
 
 We have calculated the median number of jobs per census block. But we can't export the true median because it may be a data point. Instead, we can export the fuzzy median. We also need to apply the rounding rules after calculating the fuzzy median.
 
-Exact percentiles can not be exported - instead, for example, you may calculate a “fuzzy median” by averaging the true 45th and 55th percentiles.
+Exact percentiles can not be exported - instead, for example, you may calculate a "fuzzy median" by averaging the true 45th and 55th percentiles.
 
 ## Calculating Fuzzy Median {.scrollable}
 
@@ -298,7 +299,7 @@ export_median_jobs_fuzzy_rounded
 
 ```
 
-Now that we have applied the rounding rules and created the supporting table with the underlying counts, we need to save both data frames. 
+Now that we have applied the rounding rules and created the supporting table with the underlying counts, we need to save both data frames.
 
 ## Saving Both Files
 
@@ -307,7 +308,7 @@ fuzzy_median_jobs_per_census_block %>% write_csv("files_for_documentation/export
 export_median_jobs_fuzzy_rounded %>% write_csv("files_for_export/export_2_fuzzy_median_jobs.csv")
 ```
 
-We are finished with our second export file. We've saved the table we wish to export containing the fuzzy median number of jobs by counts, and we saved the underlying counts that created the export file. We're almost done. We now need to create the documentation file that explains every file we wish to export and its associated file for documentation. 
+We are finished with our second export file. We've saved the table we wish to export containing the fuzzy median number of jobs by counts, and we saved the underlying counts that created the export file. We're almost done. We now need to create the documentation file that explains every file we wish to export and its associated file for documentation.
 
 ## Documentation File
 
@@ -337,7 +338,6 @@ We are finished with our second export file. We've saved the table we wish to ex
 Watch the <a href='https://youtu.be/qXG_i0v_bDQ'>Export Module Video Walk-through.</a>
     </span> 
 ```
-
 ## Questions {.center}
 
 ```{css}
@@ -345,4 +345,3 @@ Watch the <a href='https://youtu.be/qXG_i0v_bDQ'>Export Module Video Walk-throug
   text-align: center;
 }
 ```
-
